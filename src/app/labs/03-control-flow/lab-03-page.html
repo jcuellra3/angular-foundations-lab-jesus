@@ -1,0 +1,30 @@
+<div class="container page">
+  <app-lab-header labId="03" />
+
+  <section class="card stack">
+    <div class="filters">
+      <div class="field">
+        <label for="catalog-search">Buscar</label>
+        <input
+          id="catalog-search"
+          type="search"
+          placeholder="Nombre o descripción"
+          [value]="search()"
+          (input)="onSearch($event)"
+        />
+      </div>
+      <div class="field">
+        <label for="status-filter">Estado</label>
+        <select id="status-filter" [value]="status()" (change)="onStatusChange($event)">
+          <option value="all">Todos</option>
+          <option value="active">Activo</option>
+          <option value="out-of-stock">Sin stock</option>
+          <option value="archived">Archivado</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- TODO: muestra el número de resultados y construye aquí @for, @empty y @switch. -->
+    <div class="todo-box">Construye el catálogo a partir de <code>visibleProducts()</code>.</div>
+  </section>
+</div>
