@@ -5,13 +5,8 @@
     <div class="filters">
       <div class="field">
         <label for="catalog-search">Buscar</label>
-        <input
-          id="catalog-search"
-          type="search"
-          placeholder="Nombre o descripción"
-          [value]="search()"
-          (input)="onSearch($event)"
-        />
+        <input id="catalog-search" type="search" placeholder="Nombre o descripción" [value]="search()"
+          (input)="onSearch($event)" />
       </div>
       <div class="field">
         <label for="status-filter">Estado</label>
@@ -24,7 +19,31 @@
       </div>
     </div>
 
-    <!-- TODO: muestra el número de resultados y construye aquí @for, @empty y @switch. -->
-    <div class="todo-box">Construye el catálogo a partir de <code>visibleProducts()</code>.</div>
+    <p>Mostrando {{ visibleProducts().length }} resultados</p>
+
+    <div class="stack">
+      @for (product of visibleProducts(); track product.id) {
+      <article class="card" data-testid="product-card">
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description }}</p>
+
+        <span>
+          @switch (product.status) {
+          @case ('active') {
+          Activo
+          }
+          @case ('out-of-stock') {
+          Sin stock
+          }
+          @case ('archived') {
+          Archivado
+          }
+          }
+        </span>
+      </article>
+      } @empty {
+      <p data-testid="empty-state">No se encontraron productos.</p>
+      }
+    </div>
   </section>
 </div>
