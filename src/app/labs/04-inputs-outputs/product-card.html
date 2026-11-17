@@ -1,3 +1,9 @@
-<article class="todo-box">
-  TODO: representa el producto y emite la intención de cambiar su favorito.
+<article class="card stack">
+  <h3>{{ product().name }}</h3>
+  <p>{{ product().description }}</p>
+
+  <button type="button" [attr.aria-label]="'Añadir a favoritos ' + product().name" [attr.aria-pressed]="favorite()"
+    (click)="favoriteChange.emit(product().id)">
+    {{ favorite() ? 'En favoritos' : 'Añadir a favoritos' }}
+  </button>
 </article>

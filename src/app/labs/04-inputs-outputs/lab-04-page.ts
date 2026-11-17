@@ -1,14 +1,19 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  signal,
+} from "@angular/core";
 
-import { DEMO_PRODUCTS } from '@shared/data/catalog.data';
-import { LabHeader } from '@shared/ui/lab-header/lab-header';
+import { DEMO_PRODUCTS } from "@shared/data/catalog.data";
+import { LabHeader } from "@shared/ui/lab-header/lab-header";
 
-import { ProductCard } from './product-card';
+import { ProductCard } from "./product-card";
 
 @Component({
   imports: [LabHeader, ProductCard],
-  templateUrl: './lab-04-page.html',
-  styleUrl: './lab-04-page.css',
+  templateUrl: "./lab-04-page.html",
+  styleUrl: "./lab-04-page.css",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class Lab04Page {
@@ -22,7 +27,14 @@ export default class Lab04Page {
   }
 
   toggleFavorite(productId: string): void {
-    // TODO: crea un Set nuevo, añade o elimina el ID y actualiza el signal.
-    void productId;
+    const next = new Set(this.#favoriteIds());
+
+    if (next.has(productId)) {
+      next.delete(productId);
+    } else {
+      next.add(productId);
+    }
+
+    this.#favoriteIds.set(next);
   }
 }
