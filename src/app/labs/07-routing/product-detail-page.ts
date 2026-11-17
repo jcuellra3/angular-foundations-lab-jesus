@@ -1,7 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from "@angular/core";
+import { RouterLink } from "@angular/router";
 
-import { DEMO_PRODUCTS } from '@shared/data/catalog.data';
+import { DEMO_PRODUCTS } from "@shared/data/catalog.data";
 
 @Component({
   imports: [RouterLink],
@@ -13,7 +18,11 @@ import { DEMO_PRODUCTS } from '@shared/data/catalog.data';
         <h2 data-testid="detail-name">{{ current.name }}</h2>
         <p>{{ current.description }}</p>
       } @else {
-        <div class="notice notice--danger" role="alert" data-testid="missing-product">
+        <div
+          class="notice notice--danger"
+          role="alert"
+          data-testid="missing-product"
+        >
           No existe un producto con el identificador «{{ productId() }}».
         </div>
       }
@@ -22,9 +31,8 @@ import { DEMO_PRODUCTS } from '@shared/data/catalog.data';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ProductDetailPage {
-  readonly productId = input('');
-  readonly product = computed(() => {
-    // TODO: encuentra el producto cuyo id coincide con el parámetro de ruta.
-    return undefined;
-  });
+  readonly productId = input("");
+  readonly product = computed(() =>
+    DEMO_PRODUCTS.find((item) => item.id === this.productId()),
+  );
 }
