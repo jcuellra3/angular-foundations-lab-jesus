@@ -1,10 +1,14 @@
-import { Pipe, type PipeTransform } from '@angular/core';
+import { Pipe, type PipeTransform } from "@angular/core";
 
-@Pipe({ name: 'stockLabel' })
+@Pipe({ name: "stockLabel" })
 export class StockLabelPipe implements PipeTransform {
   transform(stock: number): string {
-    // TODO: aplica las tres reglas de stock definidas en el enunciado.
-    void stock;
-    return 'Pendiente';
+    if (stock <= 0) {
+      return "Agotado";
+    }
+    if (stock <= 5) {
+      return "Últimas unidades";
+    }
+    return "Disponible";
   }
 }
