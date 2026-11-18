@@ -10,9 +10,9 @@
       <div class="field">
         <label for="query-category">Categoría</label>
         <select id="query-category" [value]="category()" (change)="onCategory($event)">
-          <option value="">Todas</option>
+          <option value="" [selected]="category() === ''">Todas</option>
           @for (item of categories; track item.id) {
-            <option [value]="item.id">{{ item.name }}</option>
+          <option [value]="item.id" [selected]="item.id === category()">{{ item.name }}</option>
           }
         </select>
       </div>
@@ -23,9 +23,9 @@
 
     <ul>
       @for (product of visibleProducts(); track product.id) {
-        <li data-testid="query-product">{{ product.name }}</li>
+      <li data-testid="query-product">{{ product.name }}</li>
       } @empty {
-        <li>No hay resultados.</li>
+      <li>No hay resultados.</li>
       }
     </ul>
   </section>

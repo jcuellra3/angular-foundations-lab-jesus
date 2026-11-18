@@ -1,13 +1,19 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  signal,
+} from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 
-import { CATEGORIES, DEMO_PRODUCTS } from '@shared/data/catalog.data';
-import { LabHeader } from '@shared/ui/lab-header/lab-header';
+import { CATEGORIES, DEMO_PRODUCTS } from "@shared/data/catalog.data";
+import { LabHeader } from "@shared/ui/lab-header/lab-header";
 
 @Component({
   imports: [LabHeader],
-  templateUrl: './lab-08-page.html',
-  styleUrl: './lab-08-page.css',
+  templateUrl: "./lab-08-page.html",
+  styleUrl: "./lab-08-page.css",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class Lab08Page {
@@ -15,12 +21,29 @@ export default class Lab08Page {
   readonly #router = inject(Router);
 
   readonly categories = CATEGORIES;
-  readonly search = signal('');
-  readonly category = signal('');
+  readonly search = signal(
+    this.#route.snapshot.queryParamMap.get("search") ?? "",
+  );
+  readonly category = signal(
+    this.#route.snapshot.queryParamMap.get("category") ?? "",
+  );
+
+  constructor() {
+    this.#route.queryParamMap.subscribe((params) => {
+      this.search.set(params.get("search") ?? "");
+      this.category.set(params.get("category") ?? "");
+    });
+  }
 
   readonly visibleProducts = computed(() => {
-    // TODO: deriva los productos de search y category sin mutar los datos.
-    return DEMO_PRODUCTS;
+    const term = this.search().trim().toLowerCase();
+    const cat = this.category();
+
+    return DEMO_PRODUCTS.filter((product) => {
+      const matchesSearch = !term || product.name.toLowerCase().includes(term);
+      const matchesCategory = !cat || product.categoryId === cat;
+      return matchesSearch && matchesCategory;
+    });
   });
 
   onSearch(event: Event): void {
@@ -38,6 +61,16 @@ export default class Lab08Page {
   }
 
   applyFilters(): void {
-    // TODO: navega sobre la misma ruta con query params y elimina valores vacíos.
+    const searchValue = this.search().trim();
+    const categoryValue = this.category();
+
+    this.#router.navigate([], {
+      relativeTo: this.#route,
+      queryParams: {
+        search: searchValue ? searchValue : null,
+        category: categoryValue ? categoryValue : null,
+      },
+      queryParamsHandling: "merge",
+    });
   }
 }
