@@ -1,7 +1,13 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+  signal,
+} from "@angular/core";
 
 @Component({
-  selector: 'app-disclosure-panel',
+  selector: "app-disclosure-panel",
   template: `
     <section>
       <h2>
@@ -22,10 +28,25 @@ import { ChangeDetectionStrategy, Component, input, output, signal } from '@angu
     </section>
   `,
   styles: `
-    section { border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
-    h2 { margin: 0; }
-    button { width: 100%; padding: 1rem; border: 0; text-align: left; font-weight: 850; background: #f4f1e9; cursor: pointer; }
-    div { padding: 1rem; }
+    section {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+    h2 {
+      margin: 0;
+    }
+    button {
+      width: 100%;
+      padding: 1rem;
+      border: 0;
+      text-align: left;
+      font-weight: 850;
+      background: #f4f1e9;
+      cursor: pointer;
+    }
+    div {
+      padding: 1rem;
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -36,6 +57,11 @@ export class DisclosurePanel {
   readonly expanded = signal(false);
 
   toggle(): void {
-    // TODO: actualiza el estado y emite el nuevo valor.
+    //Se calcula el estado contrario leyendo el valor actual de la signal.
+    const next = !this.expanded();
+    //Se actualiza la signal para que la vista (@if y @aria-expanded) se actualice sola.
+    this.expanded.set(next);
+    //Se emite el nuevo booleano para que el componente padre pueda escucharlo.
+    this.expandedChange.emit(next);
   }
 }
